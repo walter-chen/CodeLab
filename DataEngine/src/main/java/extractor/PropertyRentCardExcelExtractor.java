@@ -57,7 +57,7 @@ public class PropertyRentCardExcelExtractor implements Runnable {
 	}
 
 	public void run() {
-		String source = lastFileModified(PathCatalog.propertyRentCart).getAbsolutePath();
+		String source = lastFileModified(PathCatalog.propertyRentCard).getAbsolutePath();
 		InputStream inp;
 		try {
 			inp = new FileInputStream(source);
@@ -166,8 +166,8 @@ public class PropertyRentCardExcelExtractor implements Runnable {
 					tempRefer.setUnicomOrderAmount(tempRecord.cRMSiteRelatedStatistic.unicomOrderAmountStr);
 					tempRefer.setClientAmount(tempRecord.cRMSiteRelatedStatistic.clientAmountStr);
 					tempRefer.setTowerTypeAmount(tempRecord.cRMSiteRelatedStatistic.towerTypeAmountStr);
-					tempRefer.setAveragePricePerYear(tempRecord.propertyRentCardSiteRelatedStatistic.averagePricePerYear);
-					tempRefer.setContractPricePerYear(tempRecord.propertyRentCardSiteRelatedStatistic.contractPricePerYear);
+					tempRefer.setPlaceRentAverageCostPerYearProperty(tempRecord.propertyRentCardSiteRelatedStatistic.averagePricePerYear);
+					tempRefer.setPlaceRentContractCostPerYearProperty(tempRecord.propertyRentCardSiteRelatedStatistic.contractPricePerYear);
 					em.persist(tempRefer);
 				}
 				tx.commit();

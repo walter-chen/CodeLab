@@ -11,6 +11,7 @@ public class CRM_Income_Reference {
 //CRM start
 	@Id
 	private String id; //订单号
+	private String orderState;
 	private String stationId; //站址编码
 	private String stationName; //站址名称
 	private String source;	// 属性   注入、自建
@@ -34,6 +35,10 @@ public class CRM_Income_Reference {
     private String systemAmount;	//系统数
     private String productUnit;	//产品单元
     private String rentDate;	//起租时间
+    private String placeRentPriceCRM; //场地费CRM
+    private String maintainPriceCRM; //维护费CRM
+    private String powerCablePriceCRM; //电力引入费用CRM
+    private String generateElecPriceCRM;//发电费用CRM
     
     private String city;
     private String client;
@@ -43,14 +48,22 @@ public class CRM_Income_Reference {
 //CRM end
     
 //Property Start
-    private String contractPricePerYear;
-    private String averagePricePerYear;
+    private String placeRentContractCostPerYearProperty;	//场租合同年租金
+    private String placeRentAverageCostPerYearProperty;	//场租长摊年租金
 //Property end
     
 //PMS Start
     private String projectProgress;
-    private String powerCableCost;
+    private String powerCableCostPMS;
 //PMS End
+
+//Maintainence template start
+    private String maintainCostMatch;
+    private String maintainStandardCost;
+    private String generateElecCostMatch;
+    private String generateElecStandardCost;
+//Maintainence template end
+    
     
     public String getId() {
     	return id;
@@ -58,11 +71,66 @@ public class CRM_Income_Reference {
     public void setId(String id) {
     	this.id = id;
     }
-    public String getPowerCableCost() {
-    	return powerCableCost;
+    public String getOrderState() {
+    	return orderState;
     }
-    public void setPowerCableCost(String powerCableCost) {
-    	this.powerCableCost = powerCableCost;
+    public void setOrderState(String orderState) {
+    	this.orderState = orderState;
+    }
+    public String getGenerateElecStandardCost() {
+    	return generateElecStandardCost;
+    }
+    public void setGenerateElecStandardCost(String generateElecStandardCost) {
+    	this.generateElecStandardCost = generateElecStandardCost;
+    }
+    public String getGenerateElecCostMatch() {
+    	return generateElecCostMatch;
+    }
+    public void setGenerateElecCostMatch(String generateElecCostMatch) {
+    	this.generateElecCostMatch = generateElecCostMatch;
+    }
+    public String getGenerateElecPriceCRM() {
+    	return generateElecPriceCRM;
+    }
+    public void setGenerateElecPriceCRM(String generateElecPriceCRM) {
+    	this.generateElecPriceCRM = generateElecPriceCRM;
+    }
+    public String getPowerCablePriceCRM() {
+    	return powerCablePriceCRM;
+    }
+    public void setPowerCablePriceCRM(String powerCablePriceCRM) {
+    	this.powerCablePriceCRM = powerCablePriceCRM;
+    }
+    public String getMaintainStandardCost() {
+    	return maintainStandardCost;
+    }
+    public void setMaintainStandardCost(String maintainStandardCost) {
+    	this.maintainStandardCost = maintainStandardCost;
+    }
+    public String getMaintainCostMatch() {
+    	return maintainCostMatch;
+    }
+    public void setMaintainCostMatch(String maintainCostMatch) {
+    	this.maintainCostMatch = maintainCostMatch;
+    }
+    public String getPowerCableCostPMS() {
+    	return powerCableCostPMS;
+    }
+    public void setPowerCableCostPMS(String powerCableCostPMS) {
+    	this.powerCableCostPMS = powerCableCostPMS;
+    }
+    public String getMaintainPriceCRM() {
+    	return maintainPriceCRM;
+    }
+    public void setMaintainPriceCRM(String maintainPriceCRM) {
+    	this.maintainPriceCRM = maintainPriceCRM;
+    }
+    
+    public String getPlaceRentPriceCRM() {
+    	return placeRentPriceCRM;
+    }
+    public void setPlaceRentPriceCRM(String placeRentPriceCRM) {
+    	this.placeRentPriceCRM = placeRentPriceCRM;
     }
     public String getProjectProgress() {
     	return projectProgress;
@@ -70,17 +138,17 @@ public class CRM_Income_Reference {
     public void setProjectProgress(String projectProgress) {
     	this.projectProgress = projectProgress;
     }
-    public String getAveragePricePerYear() {
-    	return averagePricePerYear;
+    public String getPlaceRentAverageCostPerYearProperty() {
+    	return placeRentAverageCostPerYearProperty;
     }
-    public void setAveragePricePerYear(String averagePricePerYear) {
-    	this.averagePricePerYear = averagePricePerYear;
+    public void setPlaceRentAverageCostPerYearProperty(String placeRentAverageCostPerYearProperty) {
+    	this.placeRentAverageCostPerYearProperty = placeRentAverageCostPerYearProperty;
     }
-    public String getContractPricePerYear() {
-    	return contractPricePerYear;
+    public String getPlaceRentContractCostPerYearProperty() {
+    	return placeRentContractCostPerYearProperty;
     }
-    public void setContractPricePerYear(String contractPricePerYear) {
-    	this.contractPricePerYear = contractPricePerYear;
+    public void setPlaceRentContractCostPerYearProperty(String placeRentContractCostPerYearProperty) {
+    	this.placeRentContractCostPerYearProperty = placeRentContractCostPerYearProperty;
     }
     public String getUnicomOrderAmount() {
 		return unicomOrderAmount;

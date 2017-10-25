@@ -162,10 +162,12 @@ public class PMSExcelExtractor {
 			tempRefer.setUnicomOrderAmount(tempRecord.cRMSiteRelatedStatistic.unicomOrderAmountStr);
 			tempRefer.setClientAmount(tempRecord.cRMSiteRelatedStatistic.clientAmountStr);
 			tempRefer.setTowerTypeAmount(tempRecord.cRMSiteRelatedStatistic.towerTypeAmountStr);
-			tempRefer.setAveragePricePerYear(tempRecord.propertyRentCardSiteRelatedStatistic.averagePricePerYear);
-			tempRefer.setContractPricePerYear(tempRecord.propertyRentCardSiteRelatedStatistic.contractPricePerYear);
-			tempRefer.setPowerCableCost(tempRecord.pMSPowerCabelRecord.powerCableCost);
+			tempRefer.setPlaceRentAverageCostPerYearProperty(tempRecord.propertyRentCardSiteRelatedStatistic.averagePricePerYear);
+			tempRefer.setPlaceRentContractCostPerYearProperty(tempRecord.propertyRentCardSiteRelatedStatistic.contractPricePerYear);
+			tempRefer.setPowerCableCostPMS(tempRecord.pMSPowerCabelRecord.powerCableCost);
 			tempRefer.setProjectProgress(tempRecord.pMSPowerCabelRecord.projectProgress);
+			
+			
 			em.persist(tempRefer);
 		}
 		tx.commit();

@@ -28,4 +28,12 @@ public class CRMExcelIndexCatalog {
     public static int priceIndex = 150;
     public static int longitudeIndex = 23;
     public static int latitudeIndex = 24;
+    public static int orderStateIndex = 1;
+    
+    public static int placeRentPriceIndex = 112;
+    public static int maintainPriceCRMIndex = 103;
+    public static int generateElecPriceCRM = 126;
+    public static int powerCablePriceCRM = 118;
+    
+    
 }

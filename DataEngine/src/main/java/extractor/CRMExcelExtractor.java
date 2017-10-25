@@ -132,6 +132,11 @@ print("howManyTimes: " + howManyTimes);
 			record.systemAmountTwoStr = f(row.getCell(CRMExcelIndexCatalog.systemAmountTwoIndex));
 			record.towerHeightStr = f(row.getCell(CRMExcelIndexCatalog.towerHeightIndex));
 			record.towerTypeStr = f(row.getCell(CRMExcelIndexCatalog.towerTypeIndex));
+			record.placeRentPriceCRM = f(row.getCell(CRMExcelIndexCatalog.placeRentPriceIndex));
+			record.maintainPriceCRM = f(row.getCell(CRMExcelIndexCatalog.maintainPriceCRMIndex));
+			record.generateElecPriceCRM = f(row.getCell(CRMExcelIndexCatalog.generateElecPriceCRM));
+			record.powerCablePriceCRM = f(row.getCell(CRMExcelIndexCatalog.powerCablePriceCRM));
+			record.orderState = f(row.getCell(CRMExcelIndexCatalog.orderStateIndex));
 			
 			orderIdMapCRMDataMarketRecord.put(record.orderIdStr, record);
 			if(staIdMapCRMSiteRelatedStatistic.containsKey(record.stationIdStr)){

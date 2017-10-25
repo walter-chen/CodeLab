@@ -24,6 +24,12 @@ public class CRMDataMarketRecord {
     public String systemAmountTwoStr;	//系统数
     public String systemAmountThreeStr;	//系统数
     public String rentDateStr;	//起租时间
+    public String placeRentPriceCRM; //场地费CRM
+    public String maintainPriceCRM; //维护费CRM
+    public String powerCablePriceCRM; //电力引入费用CRM
+    public String generateElecPriceCRM;//发电费用CRM
+    public String orderState;
+    
     
     public String cityStr;
     public String clientStr;

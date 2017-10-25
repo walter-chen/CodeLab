@@ -2,11 +2,11 @@ package commons;
 
 public class FileNameCatalog {
 	public static String[] cRMExtractedFileNamesFromZip = {
-//															"350000+350100.xlsx",
-//	                                                       "350000+350200.xlsx",
+															"350000+350100.xlsx",
+	                                                       "350000+350200.xlsx",
 //	                                                       "350000+350300.xlsx",
 //	                                                       "350000+350400.xlsx",
-	                                                       "350000+350500.xlsx",
+//	                                                       "350000+350500.xlsx",
 //	                                                       "350000+350600.xlsx",
 //	                                                       "350000+350700.xlsx",
 //	                                                       "350000+350800.xlsx",
