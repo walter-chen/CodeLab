@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -139,5 +141,30 @@ public class ControllerFJSupportSystem {
 		}
 		return null;
 	}
-
+	
+	@RequestMapping(value = "/orderInfoTable")
+	public String orderInfoTable(HttpServletRequest request, HttpServletResponse response) {
+		return "OrderInfoTable";
+	}
+	@RequestMapping(value = "/downloadOrderInfoTable")
+	public String downloadOrderInfoTable(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+		String selectedCity = request.getParameter("selectedCity");
+		String datetimepicker = request.getParameter("datetimepicker");
+		
+		Path file = Paths.get("/home/cc/OutputFiles/CRM/OrderInfoExcels/"+datetimepicker, selectedCity+".xlsx");
+		String encodedSelectedCity = URLEncoder.encode(selectedCity,"utf-8");// 防止下载文件名乱码
+		if (Files.exists(file)) {
+			response.setContentType("application/json;charset=UTF-8");
+			response.setContentType("application/vnd.ms-excel");
+			response.addHeader("Content-Disposition", "attachment; filename="+encodedSelectedCity+datetimepicker+".xlsx");
+			ServletOutputStream out ;
+			try {
+				out = response.getOutputStream();
+				Files.copy(file, out);
+				out.close();
+			} catch (IOException ex) {
+			}
+		}
+		return null;
+	}
 }

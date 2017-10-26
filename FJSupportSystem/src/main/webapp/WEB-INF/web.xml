@@ -4,6 +4,7 @@
     	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
 			http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"> 
+			
     <servlet>
         <servlet-name>springmvc</servlet-name>
         <servlet-class>
@@ -44,6 +45,10 @@
         <servlet-name>default</servlet-name>
         <url-pattern>*.ttf</url-pattern>
     </servlet-mapping>
+        <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.woff2</url-pattern>
+    </servlet-mapping>
     
     <!--- shiro 1.2 -->
     <listener>
@@ -57,6 +62,19 @@
         <param-name>shiroConfigLocations</param-name>
         <param-value>classpath:shiro.ini</param-value>
     </context-param>
+    
+    <filter>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>utf-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
     <filter>
         <filter-name>shiroFilter</filter-name>
         <filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
