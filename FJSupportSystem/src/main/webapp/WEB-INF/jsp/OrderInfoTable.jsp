@@ -26,7 +26,8 @@
 <link href="dashboardAssets/css/sb-admin.css" rel="stylesheet">
 
 <!-- datePicker -->
-<link rel="stylesheet" type="text/css" href="datePicker/css/jquery.datetimepicker.css"/ >
+<link rel="stylesheet" type="text/css"
+	href="datePicker/css/jquery.datetimepicker.css"/ >
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
@@ -123,12 +124,14 @@
 			</ol>
 
 			<div class="row">
-				<form class="container" action="/FJSupportSystem/downloadOrderInfoTable" method="post">
+				<form class="container"
+					action="/FJSupportSystem/downloadOrderInfoTable" method="post">
 					<div class="row">
 						<div class="col-md-6 mb-3">
 							<label for="selectedCity">地市：</label> <select
-								class="form-control" class="custom-select" id="selectedCity" name="selectedCity">
-								<option selected>请选择</option>
+								class="form-control" class="custom-select" id="selectedCity"
+								name="selectedCity">
+								<option selected value="福建">请选择</option>
 								<option value="福州">福州</option>
 								<option value="厦门">厦门</option>
 								<option value="泉州">泉州</option>
@@ -141,8 +144,8 @@
 							</select>
 						</div>
 						<div class="col-md-6 mb-3">
-							<label>日期：</label>
-							<input class="form-control" id="datetimepicker" name="datetimepicker" type="text"></input>
+							<label>日期：</label> <input class="form-control"
+								id="datetimepicker" name="datetimepicker" type="text"></input>
 						</div>
 					</div>
 					<button class="btn btn-primary" type="submit">导出Excel</button>
@@ -207,20 +210,19 @@
 		<!-- datePicker -->
 		<script src="datePicker/js/jquery.datetimepicker.full.min.js"></script>
 		<script type="text/javascript">
-		$(function(){
-			$.datetimepicker.setLocale('ch');
-			$('#datetimepicker').datetimepicker({
-				lang:'ch',
-				format: 'Ymd',
-                timepicker: false,
-                timepickerScrollbar: false,
-                scrollMonth: false,
-                scrollTime: false,
-                scrollInput: false
-			});
-		})
+			$(function() {
+				$.datetimepicker.setLocale('ch');
+				$('#datetimepicker').datetimepicker({
+					lang : 'ch',
+					format : 'Y-m-d',
+					timepicker : false,
+					timepickerScrollbar : false,
+					scrollMonth : false,
+					scrollTime : false,
+					scrollInput : false
+				});
+			})
 		</script>
 	</div>
 </body>
-
 </html>

@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -60,9 +62,11 @@ public class CRMExcelExtractor implements Runnable{
 		return renamedChoice;
 	}
 	public void run() {
-print("find latest zip");		
-		String source = lastFileModified(PathCatalog.cRMExcelPath).getAbsolutePath();  // find latest zip 
-		String destination = PathCatalog.cRMExcelPath+"/"+System.nanoTime(); // extract zip to a nanoTime named directory
+print("find latest zip");
+		Date now = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+		String source = lastFileModified(PathCatalog.cRMExcelPath+"/"+dateFormat.format(now)).getAbsolutePath();  // find latest zip 
+		String destination = PathCatalog.cRMExcelPath+"/"+dateFormat.format(now)+"/"+System.nanoTime(); // extract zip to a nanoTime named directory
 		File dir = new File(destination);
 		dir.mkdir();
 		try {
@@ -238,7 +242,7 @@ print("pursh into database");
 		
 		CRMExcelExtractor ext = new CRMExcelExtractor();
 		ext.run();
-		ext.pushIntoDataBase();
+//		ext.pushIntoDataBase();
 	}
 
 }

@@ -1,10 +1,13 @@
 package commons;
 
 public class PathCatalog {
-	public static String cRMExcelPath = "/home/cc/Downloads/Excels/CRM";
-	public static String chromeDriverPath = "/home/cc/Downloads/chromedriver";
-	public static String propertyRentCard = "/home/cc/Downloads/Excels/Property/RentCard";
-	public static String pMSExcelPath = "/home/cc/Downloads/Excels/PMS";
-	public static String maintainGenerateElecCostExcelPath = "/home/cc/Downloads/Excels/Maintain/GenerateElecCostTable";
-	public static String maintainCostExcelPath = "/home/cc/Downloads/Excels/Maintain/MaintainCostTable";
+	private static String basePath = "/home/cc";
+	public static String cRMExcelPath = basePath+"/Downloads/Excels/CRM";
+	public static String chromeDriverPath = basePath+"/Downloads/chromedriver";
+	public static String propertyRentCard = basePath+"/Downloads/Excels/Property/RentCard";
+	public static String pMSExcelPath = basePath+"/Downloads/Excels/PMS";
+	public static String maintainGenerateElecCostExcelPath = basePath+"/Downloads/Excels/Maintain/GenerateElecCostTable";
+	public static String maintainCostExcelPath = basePath+"/Downloads/Excels/Maintain/MaintainCostTable";
+	public static String settleAccountOrder = basePath+"/Downloads/Excels/CRM/SettleAccountOrders";
+	public static String orderInfoMarket = basePath+"/OutputFiles/CRM/OrderInfoExcels";
 }

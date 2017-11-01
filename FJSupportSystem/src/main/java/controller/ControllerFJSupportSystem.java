@@ -150,13 +150,13 @@ public class ControllerFJSupportSystem {
 	public String downloadOrderInfoTable(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
 		String selectedCity = request.getParameter("selectedCity");
 		String datetimepicker = request.getParameter("datetimepicker");
-		
-		Path file = Paths.get("/home/cc/OutputFiles/CRM/OrderInfoExcels/"+datetimepicker, selectedCity+".xlsx");
+		datetimepicker = datetimepicker.split("-")[0]+datetimepicker.split("-")[1]+datetimepicker.split("-")[2];
+		Path file = Paths.get("/home/cc/OutputFiles/CRM/OrderInfoExcels/"+datetimepicker, selectedCity+".xls");
 		String encodedSelectedCity = URLEncoder.encode(selectedCity,"utf-8");// 防止下载文件名乱码
 		if (Files.exists(file)) {
 			response.setContentType("application/json;charset=UTF-8");
 			response.setContentType("application/vnd.ms-excel");
-			response.addHeader("Content-Disposition", "attachment; filename="+encodedSelectedCity+datetimepicker+".xlsx");
+			response.addHeader("Content-Disposition", "attachment; filename="+encodedSelectedCity+datetimepicker+".xls");
 			ServletOutputStream out ;
 			try {
 				out = response.getOutputStream();

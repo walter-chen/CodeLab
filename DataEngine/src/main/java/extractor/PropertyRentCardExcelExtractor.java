@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -57,7 +59,9 @@ public class PropertyRentCardExcelExtractor implements Runnable {
 	}
 
 	public void run() {
-		String source = lastFileModified(PathCatalog.propertyRentCard).getAbsolutePath();
+		Date now = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+		String source = lastFileModified(PathCatalog.propertyRentCard+"/"+dateFormat.format(now)).getAbsolutePath();
 		InputStream inp;
 		try {
 			inp = new FileInputStream(source);
@@ -176,13 +180,13 @@ public class PropertyRentCardExcelExtractor implements Runnable {
 			}
 
 	public static void main(String[] args) {
-		CRMExcelExtractor cRMExcelExtractor = new CRMExcelExtractor();
-		cRMExcelExtractor.run();
+//		CRMExcelExtractor cRMExcelExtractor = new CRMExcelExtractor();
+//		cRMExcelExtractor.run();
 		PropertyRentCardExcelExtractor ext = new PropertyRentCardExcelExtractor();
-		ext.orderIdMapCRMDataMarketRecord = cRMExcelExtractor.orderIdMapCRMDataMarketRecord;
-		ext.staIdMapCRMSiteRelatedStatistic = cRMExcelExtractor.staIdMapCRMSiteRelatedStatistic;
+//		ext.orderIdMapCRMDataMarketRecord = cRMExcelExtractor.orderIdMapCRMDataMarketRecord;
+//		ext.staIdMapCRMSiteRelatedStatistic = cRMExcelExtractor.staIdMapCRMSiteRelatedStatistic;
 		ext.run();
-		ext.pushIntoDataBase();
+//		ext.pushIntoDataBase();
 	}
 
 }

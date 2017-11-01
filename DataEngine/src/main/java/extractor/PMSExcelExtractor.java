@@ -63,6 +63,8 @@ public class PMSExcelExtractor {
 
 	public void run() {
 
+		Date now = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 		File dir = lastFileModified(PathCatalog.pMSExcelPath);
 		for (File f : dir.listFiles()) {
 			InputStream is;
@@ -176,20 +178,20 @@ public class PMSExcelExtractor {
 	}
 
 	public static void main(String[] args) {
-		CRMExcelExtractor cRMExcelExtractor = new CRMExcelExtractor();
-		cRMExcelExtractor.run();
+//		CRMExcelExtractor cRMExcelExtractor = new CRMExcelExtractor();
+//		cRMExcelExtractor.run();
 
-		PropertyRentCardExcelExtractor propertyRentCardExcelExtractor = new PropertyRentCardExcelExtractor();
+//		PropertyRentCardExcelExtractor propertyRentCardExcelExtractor = new PropertyRentCardExcelExtractor();
 		// propertyRentCardExcelExtractor.orderIdMapCRMDataMarketRecord =
 		// cRMExcelExtractor.orderIdMapCRMDataMarketRecord;
 		// propertyRentCardExcelExtractor.staIdMapCRMSiteRelatedStatistic =
 		// cRMExcelExtractor.staIdMapCRMSiteRelatedStatistic;
-		propertyRentCardExcelExtractor.run();
+//		propertyRentCardExcelExtractor.run();
 
 		PMSExcelExtractor pMSExcelExtractor = new PMSExcelExtractor();
-		pMSExcelExtractor.orderIdMapCRMDataMarketRecord = cRMExcelExtractor.orderIdMapCRMDataMarketRecord;
-		pMSExcelExtractor.staIdMapCRMSiteRelatedStatistic = cRMExcelExtractor.staIdMapCRMSiteRelatedStatistic;
-		pMSExcelExtractor.staIdMapPropertyRentCardSiteRelatedStatistic = propertyRentCardExcelExtractor.staIdMapPropertyRentCardSiteRelatedStatistic;
+//		pMSExcelExtractor.orderIdMapCRMDataMarketRecord = cRMExcelExtractor.orderIdMapCRMDataMarketRecord;
+//		pMSExcelExtractor.staIdMapCRMSiteRelatedStatistic = cRMExcelExtractor.staIdMapCRMSiteRelatedStatistic;
+//		pMSExcelExtractor.staIdMapPropertyRentCardSiteRelatedStatistic = propertyRentCardExcelExtractor.staIdMapPropertyRentCardSiteRelatedStatistic;
 		pMSExcelExtractor.run();
 		pMSExcelExtractor.pushIntoDataBase();
 	}
