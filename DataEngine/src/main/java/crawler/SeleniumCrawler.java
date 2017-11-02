@@ -195,12 +195,17 @@ public class SeleniumCrawler {
 			boolean success = true;
 			int preDirSize = 0;
 			int latestDirSize = 0;
+			int sleepTime = 60000;
 			while (true) {
-				Thread.sleep(60000);
+				Thread.sleep(sleepTime);
 				dir = new File(downloadFilepath);
 				latestDirSize = (int) getDirSize(dir);
 
 				if (latestDirSize > preDirSize) {
+					if((latestDirSize - preDirSize) < (sleepTime*20/1000)) {
+						System.out.println("PMS loading speed is too slow -_-||| retry");
+						break;
+					}
 					preDirSize = latestDirSize;
 					System.out.println("PMS loading " + latestDirSize + "KB");
 				} else
@@ -354,12 +359,17 @@ public class SeleniumCrawler {
 			int preDirSize = 0;
 			int latestDirSize = 0;
 			File dir = new File(downloadFilepath);
+			int sleepTime = 20000;
 			while (true) {
-				Thread.sleep(20000);
+				Thread.sleep(sleepTime);
 				dir = new File(downloadFilepath);
 				latestDirSize = (int) getDirSize(dir);
 
 				if (latestDirSize > preDirSize) {
+					if((latestDirSize - preDirSize) < (sleepTime*20/1000)) {
+						System.out.println("WuYe loading speed is too slow -_-||| retry");
+						break;
+					}
 					preDirSize = latestDirSize;
 					System.out.println("WuYe loading " + latestDirSize + "KB");
 				} else
@@ -443,12 +453,17 @@ public class SeleniumCrawler {
 			int preDirSize = 0;
 			int latestDirSize = 0;
 			File dir = new File(downloadFilepath);
+			int sleepTime = 20000;
 			while (true) {
-				Thread.sleep(20000);
+				Thread.sleep(sleepTime);
 				dir = new File(downloadFilepath);
 				latestDirSize = (int) getDirSize(dir);
 
 				if (latestDirSize > preDirSize) {
+					if((latestDirSize - preDirSize) < (sleepTime*20/1000)) {
+						System.out.println("CRM loading speed is too slow -_-||| retry");
+						break;
+					}
 					preDirSize = latestDirSize;
 					System.out.println("CRM loading " + latestDirSize + "KB");
 				} else
@@ -762,7 +777,7 @@ public class SeleniumCrawler {
 			System.setProperty("webdriver.chrome.driver", PathCatalog.chromeDriverPath);
 			Date now = new Date();
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-			String downloadFilepath = PathCatalog.settleAccountOrder+"/" + dateFormat.format(now);
+			String downloadFilepath = PathCatalog.settleAccountOrderPath+"/" + dateFormat.format(now);
 			File dir = new File(downloadFilepath);
 			if (dir.exists()) {
 				for (File f : dir.listFiles())
@@ -870,14 +885,19 @@ public class SeleniumCrawler {
 			boolean success = true;
 			int preDirSize = 0;
 			int latestDirSize = 0;
+			int sleepTime = 30000;
 			while (true) {
-				Thread.sleep(30000);
+				Thread.sleep(sleepTime);
 				dir = new File(downloadFilepath);
 				latestDirSize = (int) getDirSize(dir);
 
 				if (latestDirSize > preDirSize) {
+					if((latestDirSize - preDirSize) < (sleepTime*20/1000)) {
+						System.out.println("CRMSettleAccountOrder loading speed is too slow -_-||| retry");
+						break;
+					}
 					preDirSize = latestDirSize;
-					System.out.println("PMS loading " + latestDirSize + "KB");
+					System.out.println("CRMSettleAccountOrder loading " + latestDirSize + "KB");
 				} else
 					break;
 			}
@@ -903,10 +923,10 @@ public class SeleniumCrawler {
 
 	public static void main(String[] args) throws InterruptedException {
 
-//		downloadCRM();
-//		downloadWuYe();
+		downloadCRM();
+		downloadWuYe();
 		downloadPMS();
-//		downloadCRMSettleAccountOrder();
+		downloadCRMSettleAccountOrder();
 		// downloadMonitor();
 		// downloadAlarm();
 		// downloadTTAlarm();

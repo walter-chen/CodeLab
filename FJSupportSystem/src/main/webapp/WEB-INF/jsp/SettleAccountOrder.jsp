@@ -1,16 +1,14 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib prefix="rapid" uri="http://www.rapid-framework.org.cn/rapid"%>
-
 <rapid:override name="page_css">
 	<!-- datePicker -->
 	<link rel="stylesheet" type="text/css"
 		href="datePicker/css/jquery.datetimepicker.css"/ >
 </rapid:override>
 <rapid:override name="page_content">
-	<!-- Breadcrumbs-->
 	<ol class="breadcrumb">
 		<li class="breadcrumb-item">数据集市</li>
-		<li class="breadcrumb-item active">订单信息表</li>
+		<li class="breadcrumb-item active">出账调账</li>
 	</ol>
 
 	<div class="row">
@@ -33,7 +31,7 @@
 					</select>
 				</div>
 				<div class="col-md-6 mb-3">
-					<label>日期：</label> <input class="form-control" id="datetimepicker"
+					<label>账期：</label> <input class="form-control" id="datetimepicker"
 						name="datetimepicker" type="text"></input>
 				</div>
 			</div>
@@ -59,5 +57,4 @@
 		})
 	</script>
 </rapid:override>
-
 <%@include file="DashboardBase.jsp"%>

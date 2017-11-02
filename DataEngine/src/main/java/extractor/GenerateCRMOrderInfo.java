@@ -130,7 +130,7 @@ public class GenerateCRMOrderInfo {
 			tempRefer.setGenerateElecCostMatch(
 					"" + tempRefer.getGenerateElecPriceCRM().equals(tempRefer.getGenerateElecStandardCost()));
 
-			em.persist(tempRefer);
+			em.merge(tempRefer);
 		}
 		tx.commit();
 		em.close();
@@ -141,7 +141,7 @@ public class GenerateCRMOrderInfo {
 		String[] cityNames = { "福州", "厦门", "泉州", "漳州", "宁德", "莆田", "南平", "三明", "龙岩" };
 		Date now = new Date();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-		String ouputFilepath = PathCatalog.orderInfoMarket + "/" + dateFormat.format(now);
+		String ouputFilepath = PathCatalog.orderInfoMarketOutputPath + "/" + dateFormat.format(now);
 		File dir = new File(ouputFilepath);
 		if (dir.exists()) {
 			for (File f : dir.listFiles())
@@ -160,9 +160,9 @@ public class GenerateCRMOrderInfo {
 			List<CRM_Income_Reference> list = query.getResultList();
 			System.out.println("size: " + list.size());
 			FileOutputStream fos = new FileOutputStream(
-					new File(PathCatalog.orderInfoMarket + "/" + dateFormat.format(now) + "/" + cityName + ".xls"));
+					new File(PathCatalog.orderInfoMarketOutputPath + "/" + dateFormat.format(now) + "/" + cityName + ".xls"));
 			int rowNo = 0;
-			Workbook wb = new HSSFWorkbook();
+			Workbook wb = new SXSSFWorkbook(1000);
 			Sheet sheet = wb.createSheet("sheet1");
 			for (CRM_Income_Reference object : list) {
 				if (rowNo == 0) {
@@ -226,7 +226,7 @@ public class GenerateCRMOrderInfo {
 		List<CRM_Income_Reference> list = query.getResultList();
 		System.out.println("size: " + list.size());
 		FileOutputStream fos = new FileOutputStream(
-				new File(PathCatalog.orderInfoMarket + "/" + dateFormat.format(now) + "/福建.xls"));
+				new File(PathCatalog.orderInfoMarketOutputPath + "/" + dateFormat.format(now) + "/福建.xls"));
 		int rowNo = 0;
 		Workbook wb = new SXSSFWorkbook(1000);
 		Sheet sheet = null;
@@ -293,25 +293,25 @@ public class GenerateCRMOrderInfo {
 	}
 
 	public static void main(String[] args) throws IOException {
-		CRMExcelExtractor cRMExcelExtractor = new CRMExcelExtractor();
-		cRMExcelExtractor.run();
-		PropertyRentCardExcelExtractor propertyRentCardExcelExtractor = new PropertyRentCardExcelExtractor();
-		propertyRentCardExcelExtractor.run();
-		PMSExcelExtractor pMSExcelExtractor = new PMSExcelExtractor();
-		pMSExcelExtractor.run();
-		MaintainGenerateElecCostExcelExtractor maintainGenerateElecCostExcelExtractor = new MaintainGenerateElecCostExcelExtractor();
-		maintainGenerateElecCostExcelExtractor.run();
-		MaintainCostExcelExtractor maintainCostExcelExtractor = new MaintainCostExcelExtractor();
-		maintainCostExcelExtractor.run();
-
-		GenerateCRMOrderInfo myExtr = new GenerateCRMOrderInfo();
-		myExtr.clientMapCityDistrictMapGenerateElecCost = maintainGenerateElecCostExcelExtractor.clientMapCityDistrictMapGenerateElecCost;
-		myExtr.clientMapCityDistrictMapProductConfigMapMaintainCost = maintainCostExcelExtractor.clientMapCityDistrictMapProductConfigMapMaintainCost;
-		myExtr.orderIdMapCRMDataMarketRecord = cRMExcelExtractor.orderIdMapCRMDataMarketRecord;
-		myExtr.orderIdMapPMSPowerCabelRecord = pMSExcelExtractor.orderIdMapPMSPowerCabelRecord;
-		myExtr.staIdMapCRMSiteRelatedStatistic = cRMExcelExtractor.staIdMapCRMSiteRelatedStatistic;
-		myExtr.staIdMapPropertyRentCardSiteRelatedStatistic = propertyRentCardExcelExtractor.staIdMapPropertyRentCardSiteRelatedStatistic;
-		myExtr.pushIntoDataBase();
+//		CRMExcelExtractor cRMExcelExtractor = new CRMExcelExtractor();
+//		cRMExcelExtractor.run();
+//		PropertyRentCardExcelExtractor propertyRentCardExcelExtractor = new PropertyRentCardExcelExtractor();
+//		propertyRentCardExcelExtractor.run();
+//		PMSExcelExtractor pMSExcelExtractor = new PMSExcelExtractor();
+//		pMSExcelExtractor.run();
+//		MaintainGenerateElecCostExcelExtractor maintainGenerateElecCostExcelExtractor = new MaintainGenerateElecCostExcelExtractor();
+//		maintainGenerateElecCostExcelExtractor.run();
+//		MaintainCostExcelExtractor maintainCostExcelExtractor = new MaintainCostExcelExtractor();
+//		maintainCostExcelExtractor.run();
+//
+//		GenerateCRMOrderInfo myExtr = new GenerateCRMOrderInfo();
+//		myExtr.clientMapCityDistrictMapGenerateElecCost = maintainGenerateElecCostExcelExtractor.clientMapCityDistrictMapGenerateElecCost;
+//		myExtr.clientMapCityDistrictMapProductConfigMapMaintainCost = maintainCostExcelExtractor.clientMapCityDistrictMapProductConfigMapMaintainCost;
+//		myExtr.orderIdMapCRMDataMarketRecord = cRMExcelExtractor.orderIdMapCRMDataMarketRecord;
+//		myExtr.orderIdMapPMSPowerCabelRecord = pMSExcelExtractor.orderIdMapPMSPowerCabelRecord;
+//		myExtr.staIdMapCRMSiteRelatedStatistic = cRMExcelExtractor.staIdMapCRMSiteRelatedStatistic;
+//		myExtr.staIdMapPropertyRentCardSiteRelatedStatistic = propertyRentCardExcelExtractor.staIdMapPropertyRentCardSiteRelatedStatistic;
+//		myExtr.pushIntoDataBase();
 		produceXLS();
 	}
 }

@@ -27,7 +27,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import commons.PathCatalog;
 import domain.CRM;
+import domain.CRM_Income_Reference;
 import pojo.Gps;
 import producer.NeighborSeeker;
 import utility.DatabaseQueryResult;
@@ -37,14 +39,16 @@ import utility.PositionUtil;
 @Controller
 public class ControllerFJSupportSystem {
 	static List<CRM> candidates;
-	static {
-		// 1、获取SecurityManager工厂，此处使用Ini配置文件初始化SecurityManager
-		Factory<org.apache.shiro.mgt.SecurityManager> factory = new IniSecurityManagerFactory("classpath:shiro.ini");
-		// 2、得到SecurityManager实例 并绑定给SecurityUtils
-		org.apache.shiro.mgt.SecurityManager securityManager = factory.getInstance();
-		SecurityUtils.setSecurityManager(securityManager);
-		candidates = DatabaseQueryResult.getDatabaseQueryResult("CRM");
-	}
+	// static {
+	// // 1、获取SecurityManager工厂，此处使用Ini配置文件初始化SecurityManager
+	// Factory<org.apache.shiro.mgt.SecurityManager> factory = new
+	// IniSecurityManagerFactory("classpath:shiro.ini");
+	// // 2、得到SecurityManager实例 并绑定给SecurityUtils
+	// org.apache.shiro.mgt.SecurityManager securityManager =
+	// factory.getInstance();
+	// SecurityUtils.setSecurityManager(securityManager);
+	// candidates = DatabaseQueryResult.getDatabaseQueryResult("CRM");
+	// }
 	private static final Log logger = LogFactory.getLog(ControllerFJSupportSystem.class);
 
 	@RequestMapping(value = "/getSearchResultJSON")
@@ -52,7 +56,7 @@ public class ControllerFJSupportSystem {
 
 		String bdLngLat = request.getParameter("query");
 		System.out.println("ao---" + bdLngLat);
-		CRM center = new CRM();
+		CRM_Income_Reference center = new CRM_Income_Reference();
 		String ggLngLat = Formula.BdToGcj(Double.parseDouble(bdLngLat.split(",")[0]),
 				Double.parseDouble(bdLngLat.split(",")[1]));
 
@@ -61,8 +65,7 @@ public class ControllerFJSupportSystem {
 
 		center.setLongitude(gps.getWgLon() + "");
 		center.setLatitude(gps.getWgLat() + "");
-		// List<CRM> candidates =
-		// DatabaseQueryResult.getDatabaseQueryResult("CRM");
+		List<CRM_Income_Reference> candidates = DatabaseQueryResult.getDatabaseQueryResult("CRM_Income_Reference");
 		JSONObject jsonObject = NeighborSeeker.seekNeighbors(center, candidates, "500");
 
 		// construction site START
@@ -131,7 +134,7 @@ public class ControllerFJSupportSystem {
 		if (Files.exists(file)) {
 			response.setContentType("application/vnd.ms-excel");
 			response.addHeader("Content-Disposition", "attachment; filename=secret.xls");
-			ServletOutputStream out ;
+			ServletOutputStream out;
 			try {
 				out = response.getOutputStream();
 				Files.copy(file, out);
@@ -141,23 +144,26 @@ public class ControllerFJSupportSystem {
 		}
 		return null;
 	}
-	
+
 	@RequestMapping(value = "/orderInfoTable")
 	public String orderInfoTable(HttpServletRequest request, HttpServletResponse response) {
 		return "OrderInfoTable";
 	}
+
 	@RequestMapping(value = "/downloadOrderInfoTable")
-	public String downloadOrderInfoTable(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+	public String downloadOrderInfoTable(HttpServletRequest request, HttpServletResponse response)
+			throws UnsupportedEncodingException {
 		String selectedCity = request.getParameter("selectedCity");
 		String datetimepicker = request.getParameter("datetimepicker");
-		datetimepicker = datetimepicker.split("-")[0]+datetimepicker.split("-")[1]+datetimepicker.split("-")[2];
-		Path file = Paths.get("/home/cc/OutputFiles/CRM/OrderInfoExcels/"+datetimepicker, selectedCity+".xls");
-		String encodedSelectedCity = URLEncoder.encode(selectedCity,"utf-8");// 防止下载文件名乱码
+		datetimepicker = datetimepicker.split("-")[0] + datetimepicker.split("-")[1] + datetimepicker.split("-")[2];
+		Path file = Paths.get(PathCatalog.orderInfoMarketOutputPath + "/" + datetimepicker, selectedCity + ".xls");
+		String encodedSelectedCity = URLEncoder.encode(selectedCity, "utf-8");// 防止下载文件名乱码
 		if (Files.exists(file)) {
 			response.setContentType("application/json;charset=UTF-8");
 			response.setContentType("application/vnd.ms-excel");
-			response.addHeader("Content-Disposition", "attachment; filename="+encodedSelectedCity+datetimepicker+".xls");
-			ServletOutputStream out ;
+			response.addHeader("Content-Disposition",
+					"attachment; filename=" + encodedSelectedCity + datetimepicker + ".xls");
+			ServletOutputStream out;
 			try {
 				out = response.getOutputStream();
 				Files.copy(file, out);
@@ -167,4 +173,34 @@ public class ControllerFJSupportSystem {
 		}
 		return null;
 	}
+
+	@RequestMapping(value = "/settleAccountOrder")
+	public String settleAccountOrder(HttpServletRequest request, HttpServletResponse response) {
+		return "SettleAccountOrder";
+	}
+
+	@RequestMapping(value = "/downloadSettleAccountOrder")
+	public String downloadSettleAccountOrder(HttpServletRequest request, HttpServletResponse response)
+			throws UnsupportedEncodingException {
+		String selectedCity = request.getParameter("selectedCity");
+		String datetimepicker = request.getParameter("datetimepicker");
+		datetimepicker = datetimepicker.split("-")[0] + datetimepicker.split("-")[1] + datetimepicker.split("-")[2];
+		Path file = Paths.get(PathCatalog.settleAccountOutputPath + "/" + datetimepicker, selectedCity + ".xls");
+		String encodedSelectedCity = URLEncoder.encode(selectedCity, "utf-8");// 防止下载文件名乱码
+		if (Files.exists(file)) {
+			response.setContentType("application/json;charset=UTF-8");
+			response.setContentType("application/vnd.ms-excel");
+			response.addHeader("Content-Disposition",
+					"attachment; filename=" + encodedSelectedCity + datetimepicker + ".xls");
+			ServletOutputStream out;
+			try {
+				out = response.getOutputStream();
+				Files.copy(file, out);
+				out.close();
+			} catch (IOException ex) {
+			}
+		}
+		return null;
+	}
+
 }

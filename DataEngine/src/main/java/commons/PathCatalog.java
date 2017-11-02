@@ -8,6 +8,8 @@ public class PathCatalog {
 	public static String pMSExcelPath = basePath+"/Downloads/Excels/PMS";
 	public static String maintainGenerateElecCostExcelPath = basePath+"/Downloads/Excels/Maintain/GenerateElecCostTable";
 	public static String maintainCostExcelPath = basePath+"/Downloads/Excels/Maintain/MaintainCostTable";
-	public static String settleAccountOrder = basePath+"/Downloads/Excels/CRM/SettleAccountOrders";
-	public static String orderInfoMarket = basePath+"/OutputFiles/CRM/OrderInfoExcels";
+	public static String settleAccountOrderPath = basePath+"/Downloads/Excels/CRM/SettleAccountOrders";
+	
+	public static String orderInfoMarketOutputPath = basePath+"/OutputFiles/CRM/OrderInfoExcels";
+	public static String settleAccountOutputPath = basePath+"/OutputFiles/CRM/SettleAccountOrders";
 }

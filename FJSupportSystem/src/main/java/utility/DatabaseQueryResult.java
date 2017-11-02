@@ -16,7 +16,7 @@ import domain.CRM;
 
 public class DatabaseQueryResult {
 	public static List getDatabaseQueryResult(String tableName){
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("DemoFJSupportSystem");
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("ReadDatabase");
 		EntityManager em = factory.createEntityManager();
 		Query query = em.createQuery("select i from " + tableName + " i");
 		List list = query.getResultList();

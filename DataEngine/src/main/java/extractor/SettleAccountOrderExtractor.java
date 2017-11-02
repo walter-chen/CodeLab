@@ -4,25 +4,30 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 import com.monitorjbl.xlsx.StreamingReader;
 
 import commons.CRMSettleAccountOrderExcelIndexCatalog;
 import commons.PathCatalog;
+import domain.CRM_Income_Reference;
 import domain.CRM_SettleAccount_Order_Info;
 
 public class SettleAccountOrderExtractor implements Runnable {
@@ -51,7 +56,7 @@ public class SettleAccountOrderExtractor implements Runnable {
 	public void run() {
 		Date now = new Date();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-		File maintainFile = lastFileModified(PathCatalog.settleAccountOrder + "/" + dateFormat.format(now));
+		File maintainFile = lastFileModified(PathCatalog.settleAccountOrderPath + "/" + dateFormat.format(now));
 		try {
 			InputStream is = new FileInputStream(maintainFile);
 			Workbook workbook = StreamingReader.builder()
@@ -137,19 +142,123 @@ public class SettleAccountOrderExtractor implements Runnable {
 			return cell.getStringCellValue();
 		}
 	}
-	public static void main(String[] args){
-//		SettleAccountOrderExtractor sa = new SettleAccountOrderExtractor();
-//		sa.run();
+	
+	public static void produceXLS() throws IOException {
+		String[] cityNames = { "福州", "厦门", "泉州", "漳州", "宁德", "莆田", "南平", "三明", "龙岩" };
+		Date now = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+		String ouputFilepath = PathCatalog.settleAccountOutputPath + "/" + dateFormat.format(now);
+		File dir = new File(ouputFilepath);
+		if (dir.exists()) {
+			for (File f : dir.listFiles())
+				f.delete();
+			dir.delete();
+		}
+		dir.mkdir();
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("ReadDatabase");
 		EntityManager em = factory.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
-		CRM_SettleAccount_Order_Info info;
-		info = em.find(CRM_SettleAccount_Order_Info.class, "0");
-		em.remove(info);
-		
+		for (String cityName : cityNames) {
+			String queryStr = "select i from CRM_SettleAccount_Order_Info i Where i.clientCity like '%" + cityName + "%'";
+			Query query = em.createQuery(queryStr);
+			List<CRM_SettleAccount_Order_Info> list = query.getResultList();
+			System.out.println("size: " + list.size());
+			FileOutputStream fos = new FileOutputStream(
+					new File(PathCatalog.settleAccountOutputPath + "/" + dateFormat.format(now) + "/" + cityName + ".xls"));
+			int rowNo = 0;
+			Workbook wb = new SXSSFWorkbook(1000);
+			Sheet sheet = wb.createSheet("sheet1");
+			for (CRM_SettleAccount_Order_Info object : list) {
+				if (rowNo == 0) {
+					String[] titles = { "地市", "帐期月份", "运营商", "产品业务确认单编号", "需求确认单编号", "站址名称", "站址编码",
+							"服务起始日期", "费用合计", "塔(出账单)", "机房(出账单)", "配套(出账单)", "场地费(出账单)", 
+							"维护费(出账单)", "油机发电(出账单)", "电力引入(出账单)", "塔(共享情况)", "机房(共享情况)", "配套(共享情况)"};
+					int columnNo = 0;
+					Row row = sheet.createRow(rowNo++);
+					for (String colTitle : titles)
+						row.createCell(columnNo++).setCellValue(colTitle);
+				}
+				int columnNo = 0;
+				Row row = sheet.createRow(rowNo++);
+				row.createCell(columnNo++).setCellValue(object.getClientCity());
+				row.createCell(columnNo++).setCellValue(object.getMonth());
+				row.createCell(columnNo++).setCellValue(object.getClient());
+				row.createCell(columnNo++).setCellValue(object.getProductBusinessConfirmOrder());
+				row.createCell(columnNo++).setCellValue(object.getDemandConfirmOrder());
+				row.createCell(columnNo++).setCellValue(object.getStationName());
+				row.createCell(columnNo++).setCellValue(object.getStationNo());
+				row.createCell(columnNo++).setCellValue(object.getServiceBeginDate());
+				row.createCell(columnNo++).setCellValue(object.getAllFee());
+				row.createCell(columnNo++).setCellValue(object.getTower());
+				row.createCell(columnNo++).setCellValue(object.getRoom());
+				row.createCell(columnNo++).setCellValue(object.getSupportingFacility());
+				row.createCell(columnNo++).setCellValue(object.getPlaceRentFee());
+				row.createCell(columnNo++).setCellValue(object.getMaintainFee());
+				row.createCell(columnNo++).setCellValue(object.getGenerateElec());
+				row.createCell(columnNo++).setCellValue(object.getPowerCable());
+				row.createCell(columnNo++).setCellValue(object.getTowerSharedState());
+				row.createCell(columnNo++).setCellValue(object.getRoomSharedState());
+				row.createCell(columnNo++).setCellValue(object.getSupportingFacilitySharedState());
+			}
+			wb.write(fos);
+			fos.flush();
+			wb.close();
+			fos.close();
+		}
+		String queryStr = "select i from CRM_SettleAccount_Order_Info i";
+		Query query = em.createQuery(queryStr);
+		List<CRM_SettleAccount_Order_Info> list = query.getResultList();
+		System.out.println("size: " + list.size());
+		FileOutputStream fos = new FileOutputStream(
+				new File(PathCatalog.settleAccountOutputPath + "/" + dateFormat.format(now) + "/福建.xls"));
+		int rowNo = 0;
+		Workbook wb = new SXSSFWorkbook(1000);
+		Sheet sheet = null;
+		for (CRM_SettleAccount_Order_Info object : list) {
+			if (rowNo % 50000 == 0) {
+				sheet = wb.createSheet("sheet" + (rowNo/50000 + 1));
+				String[] titles = {"地市", "帐期月份", "运营商", "产品业务确认单编号", "需求确认单编号", "站址名称", "站址编码",
+						"服务起始日期", "费用合计", "塔(出账单)", "机房(出账单)", "配套(出账单)", "场地费(出账单)", 
+						"维护费(出账单)", "油机发电(出账单)", "电力引入(出账单)", "塔(共享情况)", "机房(共享情况)", "配套(共享情况)" };
+				int columnNo = 0;
+				Row row = sheet.createRow(rowNo++ % 50000);
+				for (String colTitle : titles)
+					row.createCell(columnNo++).setCellValue(colTitle);
+			}
+			int columnNo = 0;
+			Row row = sheet.createRow(rowNo++ % 50000);
+			row.createCell(columnNo++).setCellValue(object.getClientCity());
+			row.createCell(columnNo++).setCellValue(object.getMonth());
+			row.createCell(columnNo++).setCellValue(object.getClient());
+			row.createCell(columnNo++).setCellValue(object.getProductBusinessConfirmOrder());
+			row.createCell(columnNo++).setCellValue(object.getDemandConfirmOrder());
+			row.createCell(columnNo++).setCellValue(object.getStationName());
+			row.createCell(columnNo++).setCellValue(object.getStationNo());
+			row.createCell(columnNo++).setCellValue(object.getServiceBeginDate());
+			row.createCell(columnNo++).setCellValue(object.getAllFee());
+			row.createCell(columnNo++).setCellValue(object.getTower());
+			row.createCell(columnNo++).setCellValue(object.getRoom());
+			row.createCell(columnNo++).setCellValue(object.getSupportingFacility());
+			row.createCell(columnNo++).setCellValue(object.getPlaceRentFee());
+			row.createCell(columnNo++).setCellValue(object.getMaintainFee());
+			row.createCell(columnNo++).setCellValue(object.getGenerateElec());
+			row.createCell(columnNo++).setCellValue(object.getPowerCable());
+			row.createCell(columnNo++).setCellValue(object.getTowerSharedState());
+			row.createCell(columnNo++).setCellValue(object.getRoomSharedState());
+			row.createCell(columnNo++).setCellValue(object.getSupportingFacilitySharedState());
+		}
+		wb.write(fos);
+		fos.flush();
+		wb.close();
+		fos.close();
+
 		tx.commit();
 		em.close();
 		factory.close();
+	}
+	
+	public static void main(String[] args) throws IOException{
+		produceXLS();
 	}
 }
