@@ -53,6 +53,7 @@ public class PropertyRentCardExcelExtractor implements Runnable {
 				lastMod = file.lastModified();
 			}
 		}
+		if(choice == null) throw new NullPointerException();
 		File renamedChoice = new File(choice.getParent() + "/" + System.currentTimeMillis() + ".xls");
 		choice.renameTo(renamedChoice);
 		return renamedChoice;
@@ -95,6 +96,10 @@ public class PropertyRentCardExcelExtractor implements Runnable {
 				continue;
 			}
 			PropertyRentCardSiteRelatedStatistic statistic = new PropertyRentCardSiteRelatedStatistic();
+			
+			String state = row.getCell(PropertyRentCardExcelIndexCatalog.cardState).getStringCellValue();
+			if(!state.equals("有效")) continue;
+			
 			statistic.stationIdStr = row.getCell(PropertyRentCardExcelIndexCatalog.stationIdIndex).getStringCellValue();
 			String cardSource = row.getCell(PropertyRentCardExcelIndexCatalog.cardSourceIndex).getStringCellValue();
 			if (cardSource.equals("存量接收长摊"))

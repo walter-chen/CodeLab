@@ -215,6 +215,7 @@ public class GenerateCRMOrderInfo {
 				row.createCell(columnNo++).setCellValue(object.getGenerateElecCostMatch());
 				row.createCell(columnNo++).setCellValue(object.getGenerateElecStandardCost());
 			}
+			list.clear();
 			wb.write(fos);
 			fos.flush();
 			wb.close();
@@ -291,27 +292,37 @@ public class GenerateCRMOrderInfo {
 		em.close();
 		factory.close();
 	}
+	public static void run() throws IOException{
+		CRMExcelExtractor cRMExcelExtractor = new CRMExcelExtractor();
+		cRMExcelExtractor.run();
+		PropertyRentCardExcelExtractor propertyRentCardExcelExtractor = new PropertyRentCardExcelExtractor();
+		propertyRentCardExcelExtractor.run();
+		PMSExcelExtractor pMSExcelExtractor = new PMSExcelExtractor();
+		pMSExcelExtractor.run();
+		MaintainGenerateElecCostExcelExtractor maintainGenerateElecCostExcelExtractor = new MaintainGenerateElecCostExcelExtractor();
+		maintainGenerateElecCostExcelExtractor.run();
+		MaintainCostExcelExtractor maintainCostExcelExtractor = new MaintainCostExcelExtractor();
+		maintainCostExcelExtractor.run();
+
+		GenerateCRMOrderInfo myExtr = new GenerateCRMOrderInfo();
+		myExtr.clientMapCityDistrictMapGenerateElecCost = maintainGenerateElecCostExcelExtractor.clientMapCityDistrictMapGenerateElecCost;
+		myExtr.clientMapCityDistrictMapProductConfigMapMaintainCost = maintainCostExcelExtractor.clientMapCityDistrictMapProductConfigMapMaintainCost;
+		myExtr.orderIdMapCRMDataMarketRecord = cRMExcelExtractor.orderIdMapCRMDataMarketRecord;
+		myExtr.orderIdMapPMSPowerCabelRecord = pMSExcelExtractor.orderIdMapPMSPowerCabelRecord;
+		myExtr.staIdMapCRMSiteRelatedStatistic = cRMExcelExtractor.staIdMapCRMSiteRelatedStatistic;
+		myExtr.staIdMapPropertyRentCardSiteRelatedStatistic = propertyRentCardExcelExtractor.staIdMapPropertyRentCardSiteRelatedStatistic;
+		myExtr.pushIntoDataBase();
+		myExtr.clientMapCityDistrictMapGenerateElecCost.clear();
+		myExtr.clientMapCityDistrictMapProductConfigMapMaintainCost.clear();
+		myExtr.orderIdMapCRMDataMarketRecord.clear();
+		myExtr.orderIdMapPMSPowerCabelRecord.clear();
+		myExtr.staIdMapCRMSiteRelatedStatistic.clear();
+		myExtr.staIdMapPropertyRentCardSiteRelatedStatistic.clear();
+		
+		produceXLS();
+	}
 
 	public static void main(String[] args) throws IOException {
-//		CRMExcelExtractor cRMExcelExtractor = new CRMExcelExtractor();
-//		cRMExcelExtractor.run();
-//		PropertyRentCardExcelExtractor propertyRentCardExcelExtractor = new PropertyRentCardExcelExtractor();
-//		propertyRentCardExcelExtractor.run();
-//		PMSExcelExtractor pMSExcelExtractor = new PMSExcelExtractor();
-//		pMSExcelExtractor.run();
-//		MaintainGenerateElecCostExcelExtractor maintainGenerateElecCostExcelExtractor = new MaintainGenerateElecCostExcelExtractor();
-//		maintainGenerateElecCostExcelExtractor.run();
-//		MaintainCostExcelExtractor maintainCostExcelExtractor = new MaintainCostExcelExtractor();
-//		maintainCostExcelExtractor.run();
-//
-//		GenerateCRMOrderInfo myExtr = new GenerateCRMOrderInfo();
-//		myExtr.clientMapCityDistrictMapGenerateElecCost = maintainGenerateElecCostExcelExtractor.clientMapCityDistrictMapGenerateElecCost;
-//		myExtr.clientMapCityDistrictMapProductConfigMapMaintainCost = maintainCostExcelExtractor.clientMapCityDistrictMapProductConfigMapMaintainCost;
-//		myExtr.orderIdMapCRMDataMarketRecord = cRMExcelExtractor.orderIdMapCRMDataMarketRecord;
-//		myExtr.orderIdMapPMSPowerCabelRecord = pMSExcelExtractor.orderIdMapPMSPowerCabelRecord;
-//		myExtr.staIdMapCRMSiteRelatedStatistic = cRMExcelExtractor.staIdMapCRMSiteRelatedStatistic;
-//		myExtr.staIdMapPropertyRentCardSiteRelatedStatistic = propertyRentCardExcelExtractor.staIdMapPropertyRentCardSiteRelatedStatistic;
-//		myExtr.pushIntoDataBase();
-		produceXLS();
+		
 	}
 }

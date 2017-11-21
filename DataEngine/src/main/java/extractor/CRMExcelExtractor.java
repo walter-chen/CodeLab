@@ -57,6 +57,7 @@ public class CRMExcelExtractor implements Runnable{
 				lastMod = file.lastModified();
 			}
 		}
+		if(choice == null) throw new NullPointerException();
 		File renamedChoice = new File(choice.getParent() + "/" + System.currentTimeMillis() + ".zip");
 		choice.renameTo(renamedChoice);
 		return renamedChoice;

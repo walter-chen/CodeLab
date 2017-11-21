@@ -49,16 +49,22 @@
 		</button>
 		<div class="collapse navbar-collapse" id="navbarResponsive">
 			<ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-				<li class="nav-item" data-toggle="tooltip" data-placement="right"
-					title="Components"><a
-					class="nav-link nav-link-collapse collapsed" data-toggle="collapse"
-					href="#collapseComponents" data-parent="#exampleAccordion"> <i
-						class="fa fa-fw fa-wrench"></i> <span class="nav-link-text">数据集市</span>
-				</a>
+				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
+					<a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
+						<i class="fa fa-fw fa-wrench"></i> 
+						<span class="nav-link-text">数据集市</span>
+					</a>
 					<ul class="sidenav-second-level collapse" id="collapseComponents">
 						<li><a href="orderInfoTable">订单信息表</a></li>
 						<li><a href="settleAccountOrder">出账调账</a></li>
-					</ul></li>
+					</ul>
+				</li>
+				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+         			 <a class="nav-link" href="siteSelectionMap">
+           				<i class="fa fa-fw fa-dashboard"></i>
+            			<span class="nav-link-text">拓展型业务选址</span>
+          			</a>
+        		</li>
 			</ul>
 			<ul class="navbar-nav sidenav-toggler">
 				<li class="nav-item"><a class="nav-link text-center"

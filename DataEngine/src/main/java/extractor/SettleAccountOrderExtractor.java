@@ -47,6 +47,7 @@ public class SettleAccountOrderExtractor implements Runnable {
 				lastMod = file.lastModified();
 			}
 		}
+		if(choice == null) throw new NullPointerException();
 		File renamedChoice = new File(choice.getParent() + "/" + System.currentTimeMillis() + ".xlsx");
 		choice.renameTo(renamedChoice);
 		return renamedChoice;
@@ -56,7 +57,12 @@ public class SettleAccountOrderExtractor implements Runnable {
 	public void run() {
 		Date now = new Date();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-		File maintainFile = lastFileModified(PathCatalog.settleAccountOrderPath + "/" + dateFormat.format(now));
+		File maintainFile;
+		try{
+			maintainFile = lastFileModified(PathCatalog.settleAccountOrderPath + "/" + dateFormat.format(now));
+		}catch(NullPointerException e){
+			return;
+		}
 		try {
 			InputStream is = new FileInputStream(maintainFile);
 			Workbook workbook = StreamingReader.builder()
@@ -67,6 +73,7 @@ public class SettleAccountOrderExtractor implements Runnable {
 			pushIntoDataBase(sheet);
 			workbook.close();
 			is.close();
+			produceXLS();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -129,7 +136,7 @@ public class SettleAccountOrderExtractor implements Runnable {
 			info.setRoomSharedState(roomSharedState);
 			info.setSupportingFacilitySharedState(supportingFacilitySharedState);
 			
-			em.persist(info);
+			em.merge(info);
 		}
 		tx.commit();
 		em.close();
@@ -205,6 +212,7 @@ public class SettleAccountOrderExtractor implements Runnable {
 			fos.flush();
 			wb.close();
 			fos.close();
+			list.clear();
 		}
 		String queryStr = "select i from CRM_SettleAccount_Order_Info i";
 		Query query = em.createQuery(queryStr);
@@ -252,7 +260,8 @@ public class SettleAccountOrderExtractor implements Runnable {
 		fos.flush();
 		wb.close();
 		fos.close();
-
+		list.clear();
+		
 		tx.commit();
 		em.close();
 		factory.close();

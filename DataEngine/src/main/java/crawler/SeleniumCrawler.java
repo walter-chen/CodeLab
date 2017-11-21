@@ -4,6 +4,7 @@ import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -26,6 +28,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import commons.PathCatalog;
 import extractor.CRMExcelExtractor;
+import extractor.GenerateCRMOrderInfo;
+import extractor.SettleAccountOrderExtractor;
 
 public class SeleniumCrawler {
 	/**
@@ -98,16 +102,23 @@ public class SeleniumCrawler {
 			elementPassword.sendKeys("1q2w3e..");
 			elementPassword.submit();
 
-			By tmpBy = By.linkText("运营支撑系统");
-			myClickWait(wait, tmpBy);
-			WebElement element = driver.findElement(tmpBy);
-			element.click();
+			while(true){
+				try{
+					By tmpBy = By.linkText("运营支撑系统");
+					myClickWait(wait, tmpBy);
+					WebElement element = driver.findElement(tmpBy);
+					element.click();
 			
-			driver.switchTo().frame("_48_INSTANCE_NZDjN9yNe2zB_iframe");
-			tmpBy = By.xpath("//*[@id=\"appModuleDiv\"]/ul/li[2]");
-			myClickWait(wait, tmpBy);
-			element = driver.findElement(tmpBy);
-			element.click();
+					driver.switchTo().frame("_48_INSTANCE_NZDjN9yNe2zB_iframe");
+					tmpBy = By.xpath("//*[@id=\"appModuleDiv\"]/ul/li[2]");
+					myClickWait(wait, tmpBy);
+					element = driver.findElement(tmpBy);
+					element.click();
+				}catch(NoSuchElementException e){
+					continue;
+				}
+				break;
+			}
 
 			Thread.sleep(10000);
 			try {
@@ -128,9 +139,9 @@ public class SeleniumCrawler {
 						driver.get("http://pms.pc.chinatowercom.cn:13456/pms/export/export/exportList.jsp");
 						Thread.sleep(2000);
 
-						tmpBy = By.xpath("//*[@id=\"typeCombo$text\"]");
+						By tmpBy = By.xpath("//*[@id=\"typeCombo$text\"]");
 						myClickWait(wait, tmpBy);
-						element = driver.findElement(tmpBy);
+						WebElement element = driver.findElement(tmpBy);
 						element.click();
 
 						tmpBy = By.xpath("//*[@id=\"mini-25$1\"]/td[2]");
@@ -319,17 +330,24 @@ public class SeleniumCrawler {
 			WebElement elementPassword = driver.findElement(By.name("password"));
 			elementPassword.sendKeys("1q2w3e..");
 			elementPassword.submit();
-
-			By tmpBy = By.linkText("运营支撑系统");
-			myClickWait(wait, tmpBy);
-			WebElement element = driver.findElement(tmpBy);
-			element.click();
 			
-			driver.switchTo().frame("_48_INSTANCE_NZDjN9yNe2zB_iframe");
-			tmpBy = By.xpath("//*[@id=\"appModuleDiv\"]/ul/li[6]");
-			myClickWait(wait, tmpBy);
-			element = driver.findElement(tmpBy);
-			element.click();
+			while(true){
+				try{
+					By tmpBy = By.linkText("运营支撑系统");
+					myClickWait(wait, tmpBy);
+					WebElement element = driver.findElement(tmpBy);
+					element.click();
+					
+					driver.switchTo().frame("_48_INSTANCE_NZDjN9yNe2zB_iframe");
+					tmpBy = By.xpath("//*[@id=\"appModuleDiv\"]/ul/li[6]");
+					myClickWait(wait, tmpBy);
+					element = driver.findElement(tmpBy);
+					element.click();
+				}catch(NoSuchElementException e){
+					continue;
+				}
+				break;
+			}
 			
 			for (String winHandle : driver.getWindowHandles()) {
 				driver.switchTo().window(winHandle); // switch focus of
@@ -343,7 +361,7 @@ public class SeleniumCrawler {
 			driver.get("http://pcms.chinatowercom.cn:8880/default/rent/rentAccrued/updateCardInfo.jsp");// 物业信息
 
 			myClickWait(wait, By.linkText("查询"));
-			element = driver.findElement(By.linkText("查询"));
+			WebElement element = driver.findElement(By.linkText("查询"));
 			element.click();
 
 			wait.until(new ExpectedCondition<Boolean>() {
@@ -420,18 +438,23 @@ public class SeleniumCrawler {
 			WebElement elementPassword = driver.findElement(tmpBy);
 			elementPassword.sendKeys("1q2w3e..");
 			elementPassword.submit();
-
-			tmpBy = By.linkText("运营支撑系统");
-			myClickWait(wait, tmpBy);
-			WebElement element = driver.findElement(tmpBy);
-			element.click();
+			while(true){
+				try{
+					tmpBy = By.linkText("运营支撑系统");
+					myClickWait(wait, tmpBy);
+					WebElement element = driver.findElement(tmpBy);
+					element.click();
 			
-			driver.switchTo().frame("_48_INSTANCE_NZDjN9yNe2zB_iframe");
-			tmpBy = By.xpath("//*[@id=\"appModuleDiv\"]/ul/li[1]");
-			myClickWait(wait, tmpBy);
-			element = driver.findElement(tmpBy);
-			element.click();
-			
+					driver.switchTo().frame("_48_INSTANCE_NZDjN9yNe2zB_iframe");
+					tmpBy = By.xpath("//*[@id=\"appModuleDiv\"]/ul/li[1]");
+					myClickWait(wait, tmpBy);
+					element = driver.findElement(tmpBy);
+					element.click();
+				}catch(NoSuchElementException e){
+					continue;
+				}
+				break;
+			}
 			Thread.sleep(5000);
 			
 			for (String winHandle : driver.getWindowHandles()) {
@@ -446,7 +469,7 @@ public class SeleniumCrawler {
 			driver.get("http://crm.chinatowercom.cn:36080/default/sale/queryRequest/QureyRequest.jsp");
 
 			myClickWait(wait, By.linkText("订单文件"));
-			element = driver.findElement(By.linkText("订单文件"));
+			WebElement element = driver.findElement(By.linkText("订单文件"));
 			element.click();
 
 			boolean success = true;
@@ -806,19 +829,24 @@ public class SeleniumCrawler {
 			WebElement elementPassword = driver.findElement(By.name("password"));
 			elementPassword.sendKeys("1q2w3e..");
 			elementPassword.submit();
-
-			By tmpBy = By.linkText("运营支撑系统");
-			myClickWait(wait, tmpBy);
-			WebElement element = driver.findElement(tmpBy);
-			element.click();
+			while(true){
+				try{
+				By tmpBy = By.linkText("运营支撑系统");
+				myClickWait(wait, tmpBy);
+				WebElement element = driver.findElement(tmpBy);
+				element.click();
 			
-			driver.switchTo().frame("_48_INSTANCE_NZDjN9yNe2zB_iframe");
-			tmpBy = By.xpath("//*[@id=\"appModuleDiv\"]/ul/li[1]");
-			myClickWait(wait, tmpBy);
-			element = driver.findElement(tmpBy);
-			element.click();
+				driver.switchTo().frame("_48_INSTANCE_NZDjN9yNe2zB_iframe");
+				tmpBy = By.xpath("//*[@id=\"appModuleDiv\"]/ul/li[1]");
+				myClickWait(wait, tmpBy);
+				element = driver.findElement(tmpBy);
+				element.click();
+				}catch(NoSuchElementException e){
+					continue;
+				}
+				break;
+			}
 			Thread.sleep(2000);
-			
 			for (String winHandle : driver.getWindowHandles()) {
 				driver.switchTo().window(winHandle); // switch focus of
 														// WebDriver to
@@ -830,9 +858,9 @@ public class SeleniumCrawler {
 			Thread.sleep(2000);
 			driver.get("http://crm.chinatowercom.cn:36080/default/billing/acctquery/downloadFee.jsp");
 			Thread.sleep(2000);
-			tmpBy = By.xpath("//*[@id=\"provinceCode$text\"]");
+			By tmpBy = By.xpath("//*[@id=\"provinceCode$text\"]");
 			myClickWait(wait, tmpBy);
-			element = driver.findElement(tmpBy);
+			WebElement element = driver.findElement(tmpBy);
 			element.click();
 			
 			tmpBy = By.xpath("//*[@id=\"mini-3$0\"]/td[2]");
@@ -890,12 +918,13 @@ public class SeleniumCrawler {
 				Thread.sleep(sleepTime);
 				dir = new File(downloadFilepath);
 				latestDirSize = (int) getDirSize(dir);
-
+				
+				System.out.println("latestDirSize: " + latestDirSize + " " + dir.getAbsolutePath());
 				if (latestDirSize > preDirSize) {
-					if((latestDirSize - preDirSize) < (sleepTime*20/1000)) {
-						System.out.println("CRMSettleAccountOrder loading speed is too slow -_-||| retry");
-						break;
-					}
+//					if((latestDirSize - preDirSize) < (sleepTime*20/1000)) {
+//						System.out.println("CRMSettleAccountOrder loading speed is too slow -_-||| retry");
+//						break;
+//					}
 					preDirSize = latestDirSize;
 					System.out.println("CRMSettleAccountOrder loading " + latestDirSize + "KB");
 				} else
@@ -908,11 +937,11 @@ public class SeleniumCrawler {
 					success = false;
 			}
 			if (success) {
-				System.out.println("PMS download successfull ^_^");
+				System.out.println("CRMSettleAccountOrder download successfull ^_^");
 				driver.quit();
 				break;
 			} else {
-				System.out.println("PMS download failed");
+				System.out.println("CRMSettleAccountOrder download failed");
 			}
 		}
 	}
@@ -921,12 +950,16 @@ public class SeleniumCrawler {
 		wait.until(ExpectedConditions.elementToBeClickable(by));
 	}
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws InterruptedException, IOException {
 
-		downloadCRM();
-		downloadWuYe();
-		downloadPMS();
+//		downloadCRM();
+//		downloadWuYe();
+//		downloadPMS();
 		downloadCRMSettleAccountOrder();
+		
+		GenerateCRMOrderInfo.run();
+		SettleAccountOrderExtractor ss = new SettleAccountOrderExtractor();
+		ss.run();
 		// downloadMonitor();
 		// downloadAlarm();
 		// downloadTTAlarm();

@@ -38,17 +38,17 @@ import utility.PositionUtil;
 
 @Controller
 public class ControllerFJSupportSystem {
-	static List<CRM> candidates;
-	// static {
-	// // 1、获取SecurityManager工厂，此处使用Ini配置文件初始化SecurityManager
-	// Factory<org.apache.shiro.mgt.SecurityManager> factory = new
-	// IniSecurityManagerFactory("classpath:shiro.ini");
-	// // 2、得到SecurityManager实例 并绑定给SecurityUtils
-	// org.apache.shiro.mgt.SecurityManager securityManager =
-	// factory.getInstance();
-	// SecurityUtils.setSecurityManager(securityManager);
-	// candidates = DatabaseQueryResult.getDatabaseQueryResult("CRM");
-	// }
+	static List<CRM_Income_Reference> candidates;
+	 static {
+	//	  1、获取SecurityManager工厂，此处使用Ini配置文件初始化SecurityManager
+		 Factory<org.apache.shiro.mgt.SecurityManager> factory = new
+		 IniSecurityManagerFactory("classpath:shiro.ini");
+	//	  2、得到SecurityManager实例 并绑定给SecurityUtils
+		 org.apache.shiro.mgt.SecurityManager securityManager =
+		 factory.getInstance();
+		 SecurityUtils.setSecurityManager(securityManager);
+		 candidates = DatabaseQueryResult.getDatabaseQueryResult("CRM_Income_Reference");
+	 }
 	private static final Log logger = LogFactory.getLog(ControllerFJSupportSystem.class);
 
 	@RequestMapping(value = "/getSearchResultJSON")
@@ -65,7 +65,7 @@ public class ControllerFJSupportSystem {
 
 		center.setLongitude(gps.getWgLon() + "");
 		center.setLatitude(gps.getWgLat() + "");
-		List<CRM_Income_Reference> candidates = DatabaseQueryResult.getDatabaseQueryResult("CRM_Income_Reference");
+//		List<CRM_Income_Reference> candidates = DatabaseQueryResult.getDatabaseQueryResult("CRM_Income_Reference");
 		JSONObject jsonObject = NeighborSeeker.seekNeighbors(center, candidates, "500");
 
 		// construction site START
@@ -80,12 +80,13 @@ public class ControllerFJSupportSystem {
 			tempJSONObject.put("经度", tempGps.getWgLon() + "");
 			tempJSONObject.put("纬度", tempGps.getWgLat() + "");
 		}
-
+		System.out.println(jsonObject.length());
 		// construction site END
 
 		try {
 			response.setContentType("text/html;charset=UTF-8");
 			response.getWriter().print(jsonObject.toString());
+			System.out.println("finished...");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -99,9 +100,14 @@ public class ControllerFJSupportSystem {
 	}
 
 	@RequestMapping(value = "/siteSelection")
-	public String getSiteInfo(Model model) {
+	public String getSiteSelection(Model model) {
 
 		return "SiteSelection";
+	}
+	@RequestMapping(value = "/siteSelectionMap")
+	public String getSiteSelectionMap(Model model) {
+
+		return "SiteSelectionMap";
 	}
 
 	@RequestMapping(value = "/index")
@@ -123,9 +129,9 @@ public class ControllerFJSupportSystem {
 			System.out.println("login successful");
 		} catch (AuthenticationException e) {
 			// 5、身份验证失败
-			return "Index";
+			return "LoginPage";
 		}
-		return "LoginPage";
+		return "Index";
 	}
 
 	@RequestMapping(value = "/download")

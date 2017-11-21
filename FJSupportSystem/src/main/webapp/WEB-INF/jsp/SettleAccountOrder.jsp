@@ -13,7 +13,7 @@
 
 	<div class="row">
 		<form class="container"
-			action="/FJSupportSystem/downloadOrderInfoTable" method="post">
+			action="/FJSupportSystem/downloadSettleAccountOrder" method="post">
 			<div class="row">
 				<div class="col-md-6 mb-3">
 					<label for="selectedCity">地市：</label> <select class="form-control"
