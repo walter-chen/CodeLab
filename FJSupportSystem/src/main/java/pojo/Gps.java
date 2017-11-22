@@ -1,8 +1,8 @@
 package pojo;
 
 public class Gps {
-	private double wgLat;
-	private double wgLon;
+	public double wgLat;
+	public double wgLon;
 	public Gps(double wgLat, double wgLon) {
 		setWgLat(wgLat);
 		setWgLon(wgLon);

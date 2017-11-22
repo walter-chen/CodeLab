@@ -47,9 +47,9 @@ body, html, #allmap {
 	var map = new BMap.Map("allmap", {
 		mapType : BMAP_HYBRID_MAP
 	});
-	var point = new BMap.Point(118.600348, 26.111578);
+	var point = new BMap.Point(${centerGps.wgLon}, ${centerGps.wgLat});
 	map.addControl(new BMap.MapTypeControl());
-	map.centerAndZoom(point, 8);
+	map.centerAndZoom(point, ${zoomDegree});
 	map.enableScrollWheelZoom(true);
 	var ctrl = new BMapLib.TrafficControl({
 		showPanel : true
@@ -79,12 +79,9 @@ body, html, #allmap {
 	}
 
 	setTimeout(function() {
-		var cities = [ "福州市", "厦门市", "泉州市", "漳州市", "宁德市", "莆田市", "南平市", "三明市",
-				"龙岩市" ];
-
-		for (var i = 0; i < cities.length; i++) {
-			getBoundary(cities[i]);
-		}
+		<c:forEach items="${citiesStr}" var="city">
+			getBoundary("${city}");
+		</c:forEach>
 	}, 2000);
 
 	var host = window.location.host;

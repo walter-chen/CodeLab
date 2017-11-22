@@ -39,6 +39,7 @@
     <servlet-name>default</servlet-name>
     <url-pattern>*.ttf</url-pattern>
   </servlet-mapping>
+  
   <listener>
     <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
   </listener>

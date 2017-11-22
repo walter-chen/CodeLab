@@ -16,4 +16,30 @@
 		</properties>
 	</persistence-unit>
 
+	<persistence-unit name="OracleHibernateLab-Outside"
+		transaction-type="RESOURCE_LOCAL">
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle9Dialect" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.connection.driver_class" value="oracle.jdbc.OracleDriver" />
+			<property name="hibernate.connection.url" value="jdbc:oracle:thin:@58.22.127.36:3336:orcl" />
+			<property name="hibernate.connection.username" value="fjtt" />
+			<property name="hibernate.connection.password" value="Fjtt2017" />
+		</properties>
+	</persistence-unit>
+
+	<persistence-unit name="OracleHibernateLab-Inside"
+		transaction-type="RESOURCE_LOCAL">
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle9Dialect" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.connection.driver_class" value="oracle.jdbc.OracleDriver" />
+			<property name="hibernate.connection.url" value="jdbc:oracle:thin:@10.15.27.5:1521:orcl" />
+			<property name="hibernate.connection.username" value="fjtt" />
+			<property name="hibernate.connection.password" value="Fjtt2017" />
+		</properties>
+	</persistence-unit>
+
 </persistence>

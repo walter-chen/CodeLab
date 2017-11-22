@@ -14,7 +14,7 @@ import domain.VIEW_STAFF_ROLE;
 
 public class UseOracle {
 
-	public static void main(String[] args){
+	public static void useNativeQuery(){
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("OracleHibernateLab-Inside");
 		EntityManager em = factory.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
@@ -45,5 +45,39 @@ public class UseOracle {
 		tx.commit();
 		em.close();
 		factory.close();
+	}
+	
+	public static void useNativeQuerySelect(){
+		String sql="SELECT s.CITY_NAME FROM PLATFORM_DEPARTMENT s where s.ORG_CODE='350585'";
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("OracleHibernateLab-Inside");
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		Query query = em.createQuery(sql);
+		List<String> list = query.getResultList();
+		for(String s: list){
+			System.out.println(s);
+		}
+		tx.commit();
+		em.close();
+		factory.close();
+	}
+	
+	public static void ttt(){
+		String sql="select i.ORG_CODE from PLATFORM_STAFF i Where i.ACCOUNT = 'sunrong'";
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("OracleHibernateLab-Inside");
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		Query query = em.createQuery(sql);
+		List<String> list = query.getResultList();
+		for(String s: list){
+			System.out.println(s);
+		}
+		System.out.println("single result: " + query.getSingleResult());
+	}
+	
+	public static void main(String[] args){
+		ttt();
 	}
 }

@@ -4,14 +4,14 @@ authc = org.apache.shiro.web.filter.authc.PassThruAuthenticationFilter
 authc.loginUrl=/login
 
 dataSource=org.springframework.jdbc.datasource.DriverManagerDataSource
-dataSource.driverClassName=oracle.jdbc.driver.OracleDriver
-dataSource.url=jdbc:oracle:thin:@10.15.27.5:1521:orcl
-dataSource.username=fjtt
-dataSource.password=Fjtt2017
+dataSource.driverClassName=com.mysql.jdbc.Driver
+dataSource.url=jdbc:mysql://localhost:3306/shiro
+dataSource.username=root
+dataSource.password=123456
 
 jdbcRealm=org.apache.shiro.realm.jdbc.JdbcRealm
 jdbcRealm.dataSource=$dataSource
-jdbcRealm.authenticationQuery = SELECT PASSWORD FROM PLATFORM_STAFF WHERE ACCOUNT = ?  
+jdbcRealm.authenticationQuery = SELECT password FROM sec_user WHERE user_name = ?  
 
 securityManager.realms=$jdbcRealm
 

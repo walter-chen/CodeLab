@@ -47,7 +47,7 @@ public class ControllerFJSupportSystem {
 		 org.apache.shiro.mgt.SecurityManager securityManager =
 		 factory.getInstance();
 		 SecurityUtils.setSecurityManager(securityManager);
-		 candidates = DatabaseQueryResult.getDatabaseQueryResult("CRM_Income_Reference");
+//		 candidates = DatabaseQueryResult.getDatabaseQueryResult("CRM_Income_Reference");
 	 }
 	private static final Log logger = LogFactory.getLog(ControllerFJSupportSystem.class);
 

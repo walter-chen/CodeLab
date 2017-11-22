@@ -21,21 +21,6 @@ public class VIEW_STAFF_ROLE implements Serializable{
 	private String CONTROLLERNAME;
 	private String ACTIONNAME;
 
-	
-	
-	public VIEW_STAFF_ROLE(){};
-
-	public VIEW_STAFF_ROLE(String ACCOUNT,String STAFF_NAME,String ORG_CODE,String ROLE_ID,String ROLE_NAME,String FUNC_ID,String FUNC_NAME,String CONTROLLERNAME,String ACTIONNAME) {  
-		this.ACCOUNT = ACCOUNT;
-		this.STAFF_NAME = STAFF_NAME;
-		this.ORG_CODE = ORG_CODE;
-		this.ROLE_ID = ROLE_ID;
-		this.ROLE_NAME = ROLE_NAME;
-		this.FUNC_ID = FUNC_ID;
-		this.FUNC_NAME = FUNC_NAME;
-		this.CONTROLLERNAME = CONTROLLERNAME;
-		this.ACTIONNAME = ACTIONNAME;
-	}
 
 	public String getACTIONNAME() {
 		return ACTIONNAME;
