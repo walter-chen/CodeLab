@@ -10,6 +10,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import domain.REPORT_CZCARD_INFO;
+import domain.StringPair;
 import domain.VIEW_STAFF_ROLE;
 
 public class UseOracle {
@@ -48,15 +49,16 @@ public class UseOracle {
 	}
 	
 	public static void useNativeQuerySelect(){
-		String sql="SELECT s.CITY_NAME FROM PLATFORM_DEPARTMENT s where s.ORG_CODE='350585'";
+		String sql="SELECT s.CITY_NAME, s.ORG_NAME FROM PLATFORM_DEPARTMENT s where s.ORG_CODE='350585'";
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("OracleHibernateLab-Inside");
 		EntityManager em = factory.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
-		Query query = em.createQuery(sql);
-		List<String> list = query.getResultList();
-		for(String s: list){
-			System.out.println(s);
+		Query query = em.createNativeQuery(sql,StringPair.class);
+		List<StringPair> list = query.getResultList();
+		System.out.println(list.size());
+		for(StringPair s: list){
+			System.out.println(s.getCITY_NAME()+s.getORG_NAME());
 		}
 		tx.commit();
 		em.close();
@@ -71,6 +73,7 @@ public class UseOracle {
 		tx.begin();
 		Query query = em.createQuery(sql);
 		List<String> list = query.getResultList();
+		System.out.println(list.size());
 		for(String s: list){
 			System.out.println(s);
 		}
@@ -78,6 +81,7 @@ public class UseOracle {
 	}
 	
 	public static void main(String[] args){
-		ttt();
+//		ttt();
+		useNativeQuerySelect();
 	}
 }

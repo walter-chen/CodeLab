@@ -4,30 +4,32 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 
-import org.json.JSONObject;
-
-import domain.CRM;
+import domain.OrderInfoShortcut;
+import domain.ReportOrderInfo;
 
 
 public class DatabaseQueryResult {
-	public static List getDatabaseQueryResult(String tableName){
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("ReadDatabase");
+	public static List<OrderInfoShortcut> getDatabaseQueryResult(String sql){
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("OracleHibernateLab-Inside");
 		EntityManager em = factory.createEntityManager();
-		Query query = em.createQuery("select i from " + tableName + " i");
-		List list = query.getResultList();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		Query query = em.createNativeQuery(sql, OrderInfoShortcut.class);
+		List<OrderInfoShortcut> list = query.getResultList();
+		System.out.println("size: " + list.size());
+		tx.commit();
 		em.close();
 		factory.close();
 		return list;
 	}
 	public static void main(String[] args){
-		List<CRM> list = getDatabaseQueryResult("CRM");
-		for(CRM temp : list){
-			System.out.println(temp.getStationName());
-		}
+		List<OrderInfoShortcut> list = getDatabaseQueryResult("select * from REPORT_ORDER_INFO i WHERE i.ORDER_STATUS='已起租'");
+//		for(ReportOrderInfo temp : list){
+//			System.out.println(temp.getTowerSitename());
+//		}
 	}
 }

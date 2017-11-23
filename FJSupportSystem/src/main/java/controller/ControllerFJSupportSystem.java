@@ -10,6 +10,11 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,17 +33,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import commons.PathCatalog;
-import domain.CRM;
-import domain.CRM_Income_Reference;
+import domain.OrderInfoShortcut;
+import domain.ReportOrderInfo;
 import pojo.Gps;
+import pojo.User;
 import producer.NeighborSeeker;
 import utility.DatabaseQueryResult;
 import utility.Formula;
+import utility.MD5Base64Encrypt;
 import utility.PositionUtil;
 
 @Controller
 public class ControllerFJSupportSystem {
-	static List<CRM_Income_Reference> candidates;
+	List<OrderInfoShortcut> candidates = DatabaseQueryResult.getDatabaseQueryResult("select * from REPORT_ORDER_INFO i WHERE i.ORDER_STATUS='已起租'");
 	 static {
 	//	  1、获取SecurityManager工厂，此处使用Ini配置文件初始化SecurityManager
 		 Factory<org.apache.shiro.mgt.SecurityManager> factory = new
@@ -47,25 +54,24 @@ public class ControllerFJSupportSystem {
 		 org.apache.shiro.mgt.SecurityManager securityManager =
 		 factory.getInstance();
 		 SecurityUtils.setSecurityManager(securityManager);
-//		 candidates = DatabaseQueryResult.getDatabaseQueryResult("CRM_Income_Reference");
+//		 candidates = DatabaseQueryResult.getDatabaseQueryResult("select * from REPORT_ORDER_INFO i WHERE i.ORDER_STATUS='已起租'");
 	 }
 	private static final Log logger = LogFactory.getLog(ControllerFJSupportSystem.class);
-
+	EntityManagerFactory oracleOutsideFactory = Persistence.createEntityManagerFactory("OracleHibernateLab-Inside");
+	
 	@RequestMapping(value = "/getSearchResultJSON")
 	public void getSearchResultJSON(HttpServletRequest request, HttpServletResponse response) {
 
 		String bdLngLat = request.getParameter("query");
 		System.out.println("ao---" + bdLngLat);
-		CRM_Income_Reference center = new CRM_Income_Reference();
+		OrderInfoShortcut center = new OrderInfoShortcut();
 		String ggLngLat = Formula.BdToGcj(Double.parseDouble(bdLngLat.split(",")[0]),
 				Double.parseDouble(bdLngLat.split(",")[1]));
-
 		Gps gps = PositionUtil.bd09_To_Gps84(Double.parseDouble(bdLngLat.split(",")[1]),
 				Double.parseDouble(bdLngLat.split(",")[0]));
-
-		center.setLongitude(gps.getWgLon() + "");
-		center.setLatitude(gps.getWgLat() + "");
-//		List<CRM_Income_Reference> candidates = DatabaseQueryResult.getDatabaseQueryResult("CRM_Income_Reference");
+		center.setLONGITUDE(gps.getWgLon() + "");
+		center.setLATITUDE(gps.getWgLat() + "");
+		
 		JSONObject jsonObject = NeighborSeeker.seekNeighbors(center, candidates, "500");
 
 		// construction site START
@@ -80,13 +86,11 @@ public class ControllerFJSupportSystem {
 			tempJSONObject.put("经度", tempGps.getWgLon() + "");
 			tempJSONObject.put("纬度", tempGps.getWgLat() + "");
 		}
-		System.out.println(jsonObject.length());
 		// construction site END
 
 		try {
 			response.setContentType("text/html;charset=UTF-8");
 			response.getWriter().print(jsonObject.toString());
-			System.out.println("finished...");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -115,11 +119,17 @@ public class ControllerFJSupportSystem {
 
 		return "Index";
 	}
+	@RequestMapping(value = "/loginPage")
+	public String loginPage(Model model) {
+
+		return "LoginPage";
+	}
 
 	@RequestMapping(value = "/login")
 	public String login(HttpServletRequest request) {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
+		password = MD5Base64Encrypt.encrypt(password);
 
 		Subject subject = SecurityUtils.getSubject();
 		UsernamePasswordToken token = new UsernamePasswordToken(username, password);
@@ -129,8 +139,23 @@ public class ControllerFJSupportSystem {
 			System.out.println("login successful");
 		} catch (AuthenticationException e) {
 			// 5、身份验证失败
+			System.out.println(username + " " + password);
 			return "LoginPage";
 		}
+
+		EntityManager em = oracleOutsideFactory.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		String queryStr = "select i.ORG_CODE from PLATFORM_STAFF i Where i.ACCOUNT = '" + username + "'";
+		System.out.println(queryStr);
+		Query query = em.createNativeQuery(queryStr);
+		String orgCode = (String) query.getSingleResult();
+		tx.commit();
+		em.close();
+
+		User user = new User(username, "", orgCode);
+		request.getSession().setAttribute("user", user);
+
 		return "Index";
 	}
 

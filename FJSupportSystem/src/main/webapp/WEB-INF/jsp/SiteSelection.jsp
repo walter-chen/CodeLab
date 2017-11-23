@@ -263,6 +263,7 @@
 												}
 											} ]
 										});
+						$.fn.dataTable.ext.errMode = 'none';
 					});
 
 	//jquery dataTable end
